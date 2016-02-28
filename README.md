@@ -1,2 +1,2 @@
-# indrevolution
-Visualizing effects of Industrial revolution from Angus' Maddison Dataset
+# Industrial Revolution
+Visualizing the industrial revolution from Angus' Maddison Dataset with D3
