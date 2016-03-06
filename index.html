@@ -39,7 +39,7 @@
             .x(function(d) { return x(d.Year); })
             .y(function(d) { return y(d.GDP); });
 
-        d3.csv("/gdp.csv", function(error, data) {
+        d3.csv("http:oleksis.github.io/growth/gdp.csv", function(error, data) {
 
           var countries = d3.nest()
               .key(function(d) { return d.Country; })
