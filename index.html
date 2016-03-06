@@ -15,11 +15,12 @@
 </head>
 <body onload="multiples()">
     <h2>Economic Growth since 1815</h2>
+    <div class = "box"></div>
     <script>
         function multiples(){
                   var margin = {top: 10, right: 10, bottom: 10, left: 10},
-            width = 170,
-            height = 170;
+            width = 160,
+            height = 160;
 
         var parseYear = d3.time.format("%Y").parse;
 
@@ -45,7 +46,7 @@
               .key(function(d) { return d.Country; })
               .entries(data);
 
-          var svg = d3.select("body").selectAll("svg")
+          var svg = d3.select(".box").selectAll("svg")
               .data(countries)
             .enter().append("svg")
               .attr("width", width + margin.left + margin.right)
@@ -63,7 +64,7 @@
 
           svg.append("text")
               .attr("x", 90)
-              .attr("y", 15)
+              .attr("y", 30)
               .style("text-anchor", "middle")
               .text(function(d) { return d.key; });
         });
@@ -75,10 +76,8 @@
           return d;
         }
         d3.select("body")
-        .append("text")
-        .attr("x", 50)
-        .attr(y(600))
-        .text("Source: The Maddison-Project, http://www.ggdc.net/maddison/maddison-project/home.htm, 2013 version.");
+        .append("div")
+        .html("Source: The Maddison-Project, "+ "<a href = 'http://www.ggdc.net/maddison/maddison-project/home.htm'>2013 version.</a>");
         };
     </script>
 </body>
