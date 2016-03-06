@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Growth</title>
+    <link rel="shortcut icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAb/8AAFf/AAB5/wAAdn8AAH7fAAB/fwAAfW8AAH2fAAB/6wAAf/cAAH+uAAB/9wAAf/kAAH/+AAB/7AAA">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js"></script>
+    <style type="text/css">
+        html {text-align: center;}
+        body {background-color: rgb(255, 255, 255); text-align: center; height: auto; font-family: Garamond; font-weight: 100; display: inline-block; font-size: auto; width: 1200px; margin: 0px; text-align: center;}
+        .line{fill: none; stroke-width: 1px; stroke: rgb(0, 0, 0); opacity: 0.5;}
+        .area {fill: rgb(245, 245, 245);}
+    </style>
+    <meta charset="utf-8">
+    <meta name="description" content="Economic Growth since 1815">
+</head>
+<body onload="multiples()">
+    <h2>Economic Growth since 1815</h2>
+    <script>
+        function multiples(){
+                  var margin = {top: 10, right: 10, bottom: 10, left: 10},
+            width = 170,
+            height = 170;
+
+        var parseYear = d3.time.format("%Y").parse;
+
+        var x = d3.time.scale()
+            .range([0, width])
+            .domain([1815, 2010]);
+
+        var y = d3.scale.linear()
+            .range([height, 0]);
+
+        var area = d3.svg.area()
+            .x(function(d) { return x(d.Year); })
+            .y0(height)
+            .y1(function(d) { return y(d.GDP); });
+
+        var line = d3.svg.line()
+            .x(function(d) { return x(d.Year); })
+            .y(function(d) { return y(d.GDP); });
+
+        d3.csv("/gdp.csv", function(error, data) {
+
+          var countries = d3.nest()
+              .key(function(d) { return d.Country; })
+              .entries(data);
+
+          var svg = d3.select("body").selectAll("svg")
+              .data(countries)
+            .enter().append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+          svg.append("path")
+              .attr("class", "area")
+              .attr("d", function(d) { y.domain([0, 32000]); return area(d.values); });
+
+          var lines = svg.append("path")
+              .attr("class", "line")
+              .attr("d", function(d) { y.domain([0, 32000]); return line(d.values); });
+
+          svg.append("text")
+              .attr("x", 90)
+              .attr("y", 15)
+              .style("text-anchor", "middle")
+              .text(function(d) { return d.key; });
+        });
+        
+        d3.select("g")
+        function type(d) {
+          d.GDP = +d.GDP;
+          d.Year = parseYear(d.Year);
+          return d;
+        }
+        d3.select("body")
+        append("text")
+        .attr("x", 50)
+        .attr(y(600))
+        .text("Source: The Maddison-Project, http://www.ggdc.net/maddison/maddison-project/home.htm, 2013 version.");
+        };
+    </script>
+</body>
+</html>
