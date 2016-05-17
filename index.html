@@ -11,14 +11,14 @@
         .area {fill: rgb(245, 245, 245);}
     </style>
     <meta charset="utf-8">
-    <meta name="description" content="Economic Growth since 1815">
+    <meta name="description" content="Economic Growth from 1815 to 2010">
 </head>
 <body onload="multiples()">
     <h2>Economic Growth since 1815</h2>
     <div class = "box"></div>
     <script>
         function multiples(){
-                  var margin = {top: 10, right: 10, bottom: 10, left: 10},
+            var margin = {top: 10, right: 10, bottom: 10, left: 10},
             width = 160,
             height = 160;
 
@@ -29,7 +29,8 @@
             .domain([1815, 2010]);
 
         var y = d3.scale.linear()
-            .range([height, 0]);
+            .range([height, 0])
+            .domain([0, 32000]);
 
         var area = d3.svg.area()
             .x(function(d) { return x(d.Year); })
@@ -40,7 +41,7 @@
             .x(function(d) { return x(d.Year); })
             .y(function(d) { return y(d.GDP); });
 
-        d3.csv("http://oleksis.github.io/growth/gdp.csv", function(error, data) {
+        d3.csv("http://lxii.github.io/growth/gdp.csv", function(error, data) {
 
           var countries = d3.nest()
               .key(function(d) { return d.Country; })
@@ -61,7 +62,14 @@
           var lines = svg.append("path")
               .attr("class", "line")
               .attr("d", function(d) { y.domain([0, 32000]); return line(d.values); });
-
+            
+            var dots = svg.append("circle")
+            .attr("r", 3)
+            .attr("cx", function (d){return x(parseYear(d.Year));})
+            .attr("cy", function(d){return y(+d.GDP);})
+            .attr("fill", "SteelBlue")
+            .attr("opacity", 1);
+            
           svg.append("text")
               .attr("x", 90)
               .attr("y", 30)
@@ -77,7 +85,8 @@
         }
         d3.select("body")
         .append("div")
-        .html("Source: The Maddison-Project, "+ "<a href = 'http://www.ggdc.net/maddison/maddison-project/home.htm'>2013 version.</a>");
+        .html("Source: The Maddison-Project, "+ "<a href = 'http://www.ggdc.net/maddison/maddison-project/home.htm'>2013 version</a>.");
+            
         };
     </script>
 </body>
