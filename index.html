@@ -61,8 +61,8 @@
             
             svg.append("path")
             .attr("class", "area")
-            .attr("fill", "gray")
-            .attr("opacity", 0.2)
+            .attr("fill", "lightgray")
+            .attr("opacity", 0.5)
             .attr("d", function(d){ y.domain([0, 32000]); return area(d.values); });
         
             svg.append("g")
@@ -86,9 +86,9 @@
             var focus = svg.append("g").style("display", "none");
             focus.append("circle")
             .attr("class", "y")
-            .style("fill", "none")
+            .style("fill", "black")
             .style("stroke", "black")
-            .attr("r", 4);
+            .attr("r", 2);
             
             svg.append("rect")
             .attr("width", width)
@@ -126,7 +126,7 @@
                 .attr("font-family", "monospace")
                 .attr("x", 9)
                 .attr("fill", "black")
-                .text(function(d) { if(d.values[index].GDP != 0){return "$ " + d.values[index].GDP;}else{return ""};})
+                .text(function(d) { if(d.values[index].GDP != 0){return "$ " + (d.values[index].GDP/1000).toFixed(1)+"K";}else{return ""};})
             
                
                 focus.select("text.year")
