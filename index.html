@@ -4,7 +4,7 @@
     <meta charset = "utf-8">
     <title>Economic Growth</title>
     <style type = "text/css">
-        body {font: Garamond; width: 100%; text-align: center;}
+        body {font: Garamond; width: 100%; text-align: center; background-color: #fffff8}
         div.chart {margin: 0px auto; width: 1200px; text-align: center;}
         .axis path, .axis line {fill: none; stroke: gray; stroke-width: 1; shape-rendering: crispEdges;}
         .y.axis {font-family: monospace; font-size: 11px; fill: gray;}
@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class = "chart">
-    <h3>GDP Per Capita from 1815 to 2010</h3>
+    <h3>GDP per Capita from 1815 to 2010</h3>
     </div>
     <script src = "http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script type = "text/javascript">
@@ -141,7 +141,7 @@
             
         d3.select("div.chart")
         .append("div")
-        .html("Source: The Maddison-Project, "+ "<a href = 'http://www.ggdc.net/maddison/maddison-project/home.htm'>2013 version</a>." + "<br>GDP per capita is measured in 1990 international Geary-Khamis dollars");
+        .html("Source: The Maddison-Project, "+ "<a href = 'http://www.ggdc.net/maddison/maddison-project/home.htm'>2013 version</a>.<br>GDP per capita is measured in 1990 <a href= 'https://en.wikipedia.org/wiki/Geary%E2%80%93Khamis_dollar'>international Geary-Khamis dollars</a>.");
         });
         
         
