@@ -15,10 +15,11 @@
 </head>
 <body>
     <div class = "chart">
-    <h3>GDP per Capita from 1815 to 2010</h3>
+    <h3>GDP per Capita* from 1815 to 2010</h3>
     </div>
     <script src = "http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script type = "text/javascript">
+        
         var margin = {top: 20, bottom: 20, left: 20, right: 20},
             width = 200 - margin.left - margin.right,
             height = 210 - margin.top - margin.bottom;
@@ -29,7 +30,7 @@
             y = d3.scale.linear().range([height, 0]);
         
         var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(0),
-            yAxis = d3.svg.axis().scale(y).orient("left").tickSize(-width).tickFormat(function(d){return Math.round(d/1000) + "K";});
+            yAxis = d3.svg.axis().scale(y).orient("left").tickSize(-width).tickFormat(function(d){return Math.round(d/1000) + "K";}).ticks(4);
         
         var valueline = d3.svg.line().x(function(d){return x(d.Year)}).y(function(d){return y(d.GDP)}).interpolate("linear"),
             area = d3.svg.area().x(function(d){return x(d.Year)}).y0(height).y1(function(d){return y(d.GDP)});
@@ -44,6 +45,10 @@
               .key(function(d) { return d.Country; })
               .entries(data);
             
+            countries.sort(function(a, b){
+              return d3.descending(b.key, a.key);
+              });
+
           var svg = d3.select("div").selectAll("svg")
               .data(countries)
             .enter().append("svg")
@@ -56,15 +61,27 @@
               .attr("class", "line")
               .attr("fill", "none")
               .attr("stroke-width", 2)
-              .attr("stroke", "lightgray")
+              .attr("stroke", "steelblue")
+              .attr("opacity", 0.4)
               .attr("d", function(d) { y.domain([0, 32000]); return valueline(d.values); });
             
-            svg.append("path")
+            svg.
+            append("path")
+            .attr("d", function(d){ y.domain([0, 32000]); return area(d.values); })
             .attr("class", "area")
-            .attr("fill", "lightgray")
-            .attr("opacity", 0.5)
-            .attr("d", function(d){ y.domain([0, 32000]); return area(d.values); });
-        
+            .attr("fill", "steelblue")
+            .attr("opacity", 0.07);
+            
+            var totalLength = 366;
+            
+            svg.select("path.line")
+            .attr("stroke-dasharray", totalLength + " " + totalLength)
+            .attr("stroke-dashoffset", totalLength)
+            .transition() // Call Transition Method
+            .duration(1500) // Set Duration timing (ms)
+            .ease("linear") // Set Easing option
+            .attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
+
             svg.append("g")
             .attr("class", "y axis")
             .call(yAxis);
@@ -86,9 +103,9 @@
             var focus = svg.append("g").style("display", "none");
             focus.append("circle")
             .attr("class", "y")
-            .style("fill", "black")
-            .style("stroke", "black")
-            .attr("r", 2);
+            .style("fill", "none")
+            .style("stroke", "blue")
+            .attr("r", 3);
             
             svg.append("rect")
             .attr("width", width)
@@ -141,9 +158,7 @@
             
         d3.select("div.chart")
         .append("div")
-        .html("Source: The Maddison-Project, "+ "<a href = 'http://www.ggdc.net/maddison/maddison-project/home.htm'>2013 version</a>.<br>GDP per capita is measured in 1990 <a href= 'https://en.wikipedia.org/wiki/Geary%E2%80%93Khamis_dollar'>international Geary-Khamis dollars</a>.");
+        .html("Source: The Maddison-Project, "+ "<a href = 'http://www.ggdc.net/maddison/maddison-project/home.htm'>2013 version</a>.<br>*GDP per capita is measured in 1990 <a href= 'https://en.wikipedia.org/wiki/Geary%E2%80%93Khamis_dollar'>international Geary-Khamis dollars</a>.");
         });
-        
-        
     </script>
 </body>
