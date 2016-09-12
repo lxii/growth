@@ -71,16 +71,6 @@
             .attr("class", "area")
             .attr("fill", "steelblue")
             .attr("opacity", 0.07);
-            
-            var totalLength = 366;
-            
-            svg.select("path.line")
-            .attr("stroke-dasharray", totalLength + " " + totalLength)
-            .attr("stroke-dashoffset", totalLength)
-            .transition() // Call Transition Method
-            .duration(1500) // Set Duration timing (ms)
-            .ease("linear") // Set Easing option
-            .attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
 
             svg.append("g")
             .attr("class", "y axis")
