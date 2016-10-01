@@ -7,8 +7,8 @@
         body {font: Garamond; width: 100%; text-align: center; background-color: #fffff8}
         div.chart {margin: 0px auto; width: 1200px; text-align: center;}
         .axis path, .axis line {fill: none; stroke: gray; stroke-width: 1; shape-rendering: crispEdges;}
-        .y.axis {font-family: monospace; font-size: 11px; fill: gray;}
-        .y.axis path {display: none;}
+        .y.axis {font-family: monospace; font-size: 11px; fill: dimgray;}
+        .y.axis path.domain {stroke: lightgray;}
         .x.axis path {display: none;}
         .y.axis line {stroke: #fff; stroke-opacity: 1; shape-rendering: crispEdges; stroke-width: 1;}
     </style>
@@ -30,7 +30,7 @@
             y = d3.scale.linear().range([height, 0]);
         
         var xAxis = d3.svg.axis().scale(x).orient("bottom").ticks(0),
-            yAxis = d3.svg.axis().scale(y).orient("left").tickSize(-width).tickFormat(function(d){return Math.round(d/1000) + "K";}).ticks(4);
+            yAxis = d3.svg.axis().scale(y).orient("left").tickSize(1).tickFormat(function(d){return Math.round(d/1000) + "K";}).ticks(5);
         
         var valueline = d3.svg.line().x(function(d){return x(d.Year)}).y(function(d){return y(d.GDP)}).interpolate("linear"),
             area = d3.svg.area().x(function(d){return x(d.Year)}).y0(height).y1(function(d){return y(d.GDP)});
@@ -55,7 +55,8 @@
               .attr("width", width + margin.left + margin.right)
               .attr("height", height + margin.top + margin.bottom)
             .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+              .attr("id", function(d){return d.key;});
 
           var lines = svg.append("path")
               .attr("class", "line")
@@ -72,7 +73,15 @@
             .attr("fill", "steelblue")
             .attr("opacity", 0.07);
 
-            svg.append("g")
+            d3.select("#Australia").append("g")
+            .attr("class", "y axis")
+            .call(yAxis);
+            
+            d3.select("#Finland").append("g")
+            .attr("class", "y axis")
+            .call(yAxis);
+            
+            d3.select("#Norway").append("g")
             .attr("class", "y axis")
             .call(yAxis);
             
