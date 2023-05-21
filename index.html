@@ -35,7 +35,7 @@
         var valueline = d3.svg.line().x(function(d){return x(d.Year)}).y(function(d){return y(d.GDP)}).interpolate("linear"),
             area = d3.svg.area().x(function(d){return x(d.Year)}).y0(height).y1(function(d){return y(d.GDP)});
         
-        d3.csv("http://lxii.github.io/growth/gdp.csv", function(error, data) {
+        d3.csv("https://lxii.github.io/growth/gdp.csv", function(error, data) {
             data.forEach(function(d){
                 d.Year = +d.Year;
                 d.GDP = +d.GDP;
